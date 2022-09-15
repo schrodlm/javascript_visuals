@@ -9,15 +9,16 @@ const settings = {
 const sketch = () => {
   return ({ context, width, height }) => {
     // Off-white background
-    context.fillStyle = 'white';
+    context.fillStyle = 'black';
+    context.strokeStyle = '#FFFFFF';
     context.fillRect(0, 0, width, height);
     context.lineWidth = width * 0.013;
 
     const width_rec = width * 0.1;
     const height_rec = height * 0.1;
     const gap = width * 0.03;
-    const iy = height * 0.17;
-    const ix = width * 0.17;
+    const iy = height * 0.18;
+    const ix = width * 0.18;
     let x,y;
 
     const off = width * 0.02;
