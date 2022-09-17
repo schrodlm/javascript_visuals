@@ -1,39 +1,90 @@
 const canvasSketch = require('canvas-sketch');
-const math = require('canvas-sketch-util/math');
 const random = require('canvas-sketch-util/random');
 
 const settings = {
-  dimensions: [ 1080, 1080 ]
+  dimensions: [ 1080, 1080 ],
+  animate: true
 };
 
-const sketch = () => {
+
+// THIS IS HOW ANIMATION ON BROWSER WORKS
+// const animate = () =>
+// {
+//   console.log('domestika');
+//   requestAnimationFrame(animate);
+// };
+// animate();
+
+const sketch = ({ context, width, height }) => {
+
+  const agents = [];
+
+  for(let i = 0; i < 40; i++)
+  {
+    const x = random.range(0,width/2);
+    const y = random.range(0,height/2);
+
+    agents.push(new Agent(x,y));
+  }
+
   return ({ context, width, height }) => {
     context.fillStyle = 'white';
+
     context.fillRect(0, 0, width, height);
 
-    context.fillStyle = 'black';
 
-    const cx = width * 0.5;
-    const cy = height * 0.5;
-
-    const w = width * 0.01;
-    const h = width * 0.1;
-    let x,y;
-
-    const loop_count = 12;
-    const radius = width * 0.1; // 1080 * 0.3
-    const slice = math.degToRad(360/loop_count); // degToRoad(360 / 12) 
+    agents.forEach(agent => {
+      agent.update();
+      agent.draw(context);
+      agent.bounce(width,height);
+    });
 
 
-    for(let i = 0; i < loop_count*10; i++)
-    {
-      context.beginPath();
-      context.lineWidth = random.range(1,7);
-      context.arc(0,0, random.range(70,100) * i * 0.5, 0, Math.PI*2);
-      context.stroke();
-    
-    }
+
   };
 };
 
 canvasSketch(sketch, settings);
+
+class Vector{
+  constructor(x,y)
+  {
+    this.x = x;
+    this.y = y;
+  }
+}
+
+class Agent{
+  constructor(x,y)
+  {
+    this.pos = new Vector(x,y);
+    this.velocity = new Vector(random.range(-1,1), random.range(-1,1));
+
+    this.radius = random.range(4,12);
+  }
+  update()
+  {
+    this.pos.x += this.velocity.x;
+    this.pos.y += this.velocity.y;
+  }
+
+  draw(context)
+  {
+    context.save()
+    context.translate(this.pos.x,this.pos.y);
+
+    context.lineWidth = 4;
+
+    context.beginPath();
+    context.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2);
+    context.fill();
+    context.stroke();
+    context.restore();
+  }
+
+  bounce(width,height)
+  {
+    if(this.pos.x <= 0 || this.pos.x >= width/2) this.velocity.x *= -1;
+    if(this.pos.y <= 0 || this.pos.y >= height/2) this.velocity.y *= -1;
+  }
+}
