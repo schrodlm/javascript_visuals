@@ -1,4 +1,5 @@
 const canvasSketch = require('canvas-sketch');
+const { sign } = require('canvas-sketch-util/random');
 const random = require('canvas-sketch-util/random');
 
 const settings = {
@@ -70,9 +71,10 @@ class Agent{
 
   draw(context)
   {
+    context.fillStyle = 'black'
+
     context.save()
     context.translate(this.pos.x,this.pos.y);
-
     context.lineWidth = 4;
 
     context.beginPath();

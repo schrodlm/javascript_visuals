@@ -37,3 +37,26 @@ const sketch = () => {
 };
 
 canvasSketch(sketch, settings);
+
+
+class Radius{
+  constructor(r)
+  {
+    this.r = r;
+  }
+}
+
+class Agent{
+  constructor(r)
+  {
+    this.radius = new Radius(r);
+  }
+
+  draw(context)
+  {
+    context.lineWidth = 4;
+    context.beginPath();
+    context.arc(0,0, r, Math.PI * 2);
+    context.stroke();
+  }
+}
