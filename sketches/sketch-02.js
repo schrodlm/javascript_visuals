@@ -1,4 +1,5 @@
-const canvasSketch = require('canvas-sketch');
+ 
+ const canvasSketch = require('canvas-sketch');
 const math = require('canvas-sketch-util/math');
 const random = require('canvas-sketch-util/random');
 
